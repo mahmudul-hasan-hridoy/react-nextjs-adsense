@@ -48,42 +48,24 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
-var AdSense = function (_a) {
-    var _b = _a.className, className = _b === void 0 ? "" : _b, _c = _a.style, style = _c === void 0 ? { display: "block" } : _c, client = _a.client, slot = _a.slot, _d = _a.layout, layout = _d === void 0 ? "" : _d, _e = _a.layoutKey, layoutKey = _e === void 0 ? "" : _e, _f = _a.format, format = _f === void 0 ? "auto" : _f, _g = _a.responsive, responsive = _g === void 0 ? "false" : _g, _h = _a.pageLevelAds, pageLevelAds = _h === void 0 ? false : _h, adTest = _a.adTest, children = _a.children, rest = __rest(_a, ["className", "style", "client", "slot", "layout", "layoutKey", "format", "responsive", "pageLevelAds", "adTest", "children"]);
-    var scriptLoaded = (0, react_1.useRef)(false);
+function AdSense(_a) {
+    var _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.style, style = _c === void 0 ? { display: 'block' } : _c, client = _a.client, slot = _a.slot, _d = _a.layout, layout = _d === void 0 ? '' : _d, _e = _a.layoutKey, layoutKey = _e === void 0 ? '' : _e, _f = _a.format, format = _f === void 0 ? 'auto' : _f, _g = _a.responsive, responsive = _g === void 0 ? 'false' : _g, _h = _a.pageLevelAds, pageLevelAds = _h === void 0 ? false : _h, adTest = _a.adTest, children = _a.children, rest = __rest(_a, ["className", "style", "client", "slot", "layout", "layoutKey", "format", "responsive", "pageLevelAds", "adTest", "children"]);
     (0, react_1.useEffect)(function () {
-        // Load AdSense script if not loaded already
-        if (!scriptLoaded.current) {
-            var adsScript = document.createElement("script");
-            adsScript.src =
-                "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-            adsScript.async = true;
-            adsScript.crossOrigin = "anonymous";
-            document.head.appendChild(adsScript);
-            adsScript.onload = function () {
-                scriptLoaded.current = true;
-                initializeAds();
-            };
+        var p = {};
+        if (pageLevelAds) {
+            p.google_ad_client = client;
+            p.enable_page_level_ads = true;
         }
-        else {
-            initializeAds();
-        }
-        // Initialize Google AdSense
-        function initializeAds() {
-            try {
-                if (typeof window === "object") {
-                    (window.adsbygoogle =
-                        window.adsbygoogle || []).push({
-                        google_ad_client: client,
-                        enable_page_level_ads: pageLevelAds,
-                    });
-                }
-            }
-            catch (e) {
-                console.error("Adsense error:", e);
+        try {
+            if (typeof window === 'object') {
+                (window.adsbygoogle = window.adsbygoogle || []).push(p);
             }
         }
-    }, [client, slot, pageLevelAds]);
+        catch (_a) {
+            // Pass
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (react_1.default.createElement("ins", __assign({ className: "adsbygoogle ".concat(className), style: style, "data-ad-client": client, "data-ad-slot": slot, "data-ad-layout": layout, "data-ad-layout-key": layoutKey, "data-ad-format": format, "data-full-width-responsive": responsive, "data-adtest": adTest }, rest), children));
-};
+}
 exports.default = AdSense;

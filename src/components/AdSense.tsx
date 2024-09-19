@@ -1,57 +1,51 @@
 // src/components/AdSense.tsx
 "use client";
-import React, { useEffect, useRef } from "react";
-import { AdSenseProps } from "../types";
+import React, { useEffect } from 'react';
 
-const AdSense: React.FC<AdSenseProps> = ({
-  className = "",
-  style = { display: "block" },
+interface Props {
+  className?: string;
+  style?: React.CSSProperties;
+  client: string;
+  slot: string;
+  layout?: string;
+  layoutKey?: string;
+  format?: string;
+  responsive?: string;
+  pageLevelAds?: boolean;
+  adTest?: string;
+  children?: React.ReactNode;
+}
+
+export default function AdSense({
+  className = '',
+  style = { display: 'block' },
   client,
   slot,
-  layout = "",
-  layoutKey = "",
-  format = "auto",
-  responsive = "false",
+  layout = '',
+  layoutKey = '',
+  format = 'auto',
+  responsive = 'false',
   pageLevelAds = false,
   adTest,
   children,
   ...rest
-}) => {
-  const scriptLoaded = useRef(false);
-
+}: Props) {
   useEffect(() => {
-    // Load AdSense script if not loaded already
-    if (!scriptLoaded.current) {
-      const adsScript = document.createElement("script");
-      adsScript.src =
-        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-      adsScript.async = true;
-      adsScript.crossOrigin = "anonymous";
-      document.head.appendChild(adsScript);
-
-      adsScript.onload = () => {
-        scriptLoaded.current = true;
-        initializeAds();
-      };
-    } else {
-      initializeAds();
+    const p: any = {};
+    if (pageLevelAds) {
+      p.google_ad_client = client;
+      p.enable_page_level_ads = true;
     }
 
-    // Initialize Google AdSense
-    function initializeAds() {
-      try {
-        if (typeof window === "object") {
-          ((window as any).adsbygoogle =
-            (window as any).adsbygoogle || []).push({
-            google_ad_client: client,
-            enable_page_level_ads: pageLevelAds,
-          });
-        }
-      } catch (e) {
-        console.error("Adsense error:", e);
+    try {
+      if (typeof window === 'object') {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(p);
       }
+    } catch {
+      // Pass
     }
-  }, [client, slot, pageLevelAds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ins
@@ -69,6 +63,4 @@ const AdSense: React.FC<AdSenseProps> = ({
       {children}
     </ins>
   );
-};
-
-export default AdSense;
+}
