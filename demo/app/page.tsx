@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="min-h-screen max-w-screen-md mx-auto flex flex-col items-center justify-center bg-gray-100 p-4">
+    <div className="max-w-screen-md mx-auto bg-gray-100 p-4">
       <div className="w-full">
         {/* Header */}
         <h1 className="text-4xl font-bold text-center text-gray-800 my-8">
@@ -57,7 +57,7 @@ export default function Home() {
         <p className="text-gray-500 mb-4">Adblock must be disabled</p>
 
         {/* AdSense Component */}
-        <div className="w-full max-w-screen-lg mb-8">
+        <div className="w-full mb-8">
           <AdSense
             client="ca-pub-6380030036040607"
             slot="8412192778"
