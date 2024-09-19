@@ -36,15 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mahmudul-hasan0088/react-nextjs-adsense.git"
+    "url": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense.git"
   },
   "bugs": {
-    "url": "https://github.com/Mahmudul-hasan0088/react-nextjs-adsense/issues"
+    "url": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense/issues"
   },
-  "homepage": "https://github.com/Mahmudul-hasan0088/react-nextjs-adsense#readme",
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "react-nextjs-adsense": "^1.1.0",
-    "tailwind-merge": "^2.5.2"
-  }
+  "homepage": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense#readme"
 }

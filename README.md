@@ -1,6 +1,6 @@
 # react-nextjs-adsense
 
-A flexible and easy-to-use AdSense component for React and Next.js applications.
+A React component for easy integration of Google AdSense in Next.js applications.
 
 ## Installation
 
@@ -16,88 +16,96 @@ yarn add react-nextjs-adsense
 
 ## Usage
 
-### 1. Wrap your app with AdSenseProvider (optional, but recommended)
+### Basic Usage
 
-```jsx
-import { AdSenseProvider } from 'react-nextjs-adsense';
-
-function MyApp({ Component, pageProps }) {
-  return (
-    <AdSenseProvider client="ca-pub-XXXXXXXXXXXXXXXX">
-      <Component {...pageProps} />
-    </AdSenseProvider>
-  );
-}
-
-export default MyApp;
-```
-
-### 2. Use the AdSense component in your pages or components
+Here's a basic example of how to use the AdSense component in your Next.js application:
 
 ```jsx
 import { AdSense } from 'react-nextjs-adsense';
 
-function MyPage() {
+const MyComponent = () => {
   return (
     <div>
-      <h1>My Content</h1>
-      
-      {/* Standard responsive ad */}
-      <AdSense slot="XXXXXXXXXX" />
-      
-      {/* In-article ad */}
-      <AdSense slot="XXXXXXXXXX" format="fluid" layout="in-article" />
-      
-      {/* In-feed ad */}
-      <AdSense 
-        slot="XXXXXXXXXX" 
-        format="fluid" 
-        layout="in-feed" 
-        layoutKey="-fb+5w+4e-db+86"
+      <h1>My Page Content</h1>
+      <AdSense
+        client="ca-pub-XXXXXXXXXXXXXXXX"
+        slot="1234567890"
       />
-      
-      {/* Display ad */}
-      <AdSense slot="XXXXXXXXXX" format="rectangle" responsive={false} />
     </div>
   );
-}
+};
+
+export default MyComponent;
+```
+
+### Advanced Usage
+
+You can customize the AdSense component with various props:
+
+```jsx
+import { AdSense } from 'react-nextjs-adsense';
+
+const MyComponent = () => {
+  return (
+    <div>
+      <h1>My Page Content</h1>
+      <AdSense
+        client="ca-pub-XXXXXXXXXXXXXXXX"
+        slot="1234567890"
+        style={{ display: 'block' }}
+        layout="in-article"
+        format="fluid"
+        responsive="true"
+      />
+    </div>
+  );
+};
+
+export default MyComponent;
+```
+
+### Page-Level Ads
+
+To enable page-level ads:
+
+```jsx
+import { AdSense } from 'react-nextjs-adsense';
+
+const MyPage = () => {
+  return (
+    <div>
+      <AdSense
+        client="ca-pub-XXXXXXXXXXXXXXXX"
+        pageLevelAds={true}
+      />
+      {/* Your page content */}
+    </div>
+  );
+};
 
 export default MyPage;
 ```
 
 ## Props
 
-The `AdSense` component accepts the following props:
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `client` | string | - | Your AdSense client ID (required) |
+| `slot` | string | - | Your AdSense ad unit ID (required) |
+| `className` | string | `''` | Additional CSS classes for the ad container |
+| `style` | object | `{ display: 'block' }` | Inline styles for the ad container |
+| `layout` | string | `''` | AdSense layout type |
+| `layoutKey` | string | `''` | AdSense layout key |
+| `format` | string | `'auto'` | AdSense format |
+| `responsive` | string | `'false'` | Whether the ad should be responsive |
+| `pageLevelAds` | boolean | `false` | Enable page-level ads |
+| `adTest` | string | - | Set to 'on' to enable test ads |
 
-- `client` (optional): Your AdSense client ID. If not provided, it will use the one from AdSenseProvider.
-- `slot` (required): The ad unit ID.
-- `format` (optional): Ad format. Can be 'auto', 'fluid', 'rectangle', 'vertical', or 'horizontal'. Default is 'auto'.
-- `responsive` (optional): Whether the ad should be responsive. Default is true.
-- `style` (optional): Additional styles for the ad container.
-- `className` (optional): Additional CSS classes for the ad container.
-- `layout` (optional): Can be 'in-article' or 'in-feed' for specific ad layouts.
-- `layoutKey` (optional): Required for some ad layouts like 'in-feed'.
-- `fullWidthResponsive` (optional): Whether the ad should be full-width responsive. Default is false.
+## Notes
 
-## Advanced Usage
-
-### Using the useAdSense hook
-
-You can use the `useAdSense` hook to access the AdSense context in your components:
-
-```jsx
-import { useAdSense } from 'react-nextjs-adsense';
-
-function MyComponent() {
-  const { isEnabled, isLoaded, error } = useAdSense();
-
-  if (!isLoaded) return <div>Loading ads...</div>;
-  if (error) return <div>Error loading ads: {error}</div>;
-  if (!isEnabled) return null;
-
-  return <div>Ads are ready to be displayed</div>;
-}
-```
+- Make sure you comply with Google AdSense policies when implementing ads.
+- The component will automatically load the AdSense script if it hasn't been loaded yet.
+- For Next.js applications, ensure you're using the component on the client-side (e.g., inside `useEffect` or by using dynamic imports with `ssr: false`).
 
 ## License
 
@@ -106,3 +114,4 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+export default MyPage;
