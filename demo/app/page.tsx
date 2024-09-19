@@ -1,6 +1,6 @@
 "use client";
 
-import { AdSense } from "../../dist/index";
+import { AdSense } from "../dist/index";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

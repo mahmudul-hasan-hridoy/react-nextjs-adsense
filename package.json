@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense/issues"
   },
-  "homepage": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense#readme"
+  "homepage": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense#readme",
+  "dependencies": {
+    "next": "^14.2.12"
+  }
 }
