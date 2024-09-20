@@ -1,6 +1,6 @@
 "use client";
 
-import { AdSense } from "../dist/index";
+import { AdSense } from "react-nextjs-adsense";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

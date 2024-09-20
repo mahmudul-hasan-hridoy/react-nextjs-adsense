@@ -1,5 +1,5 @@
-import React from "react";
-interface AdsenseProps {
+import React from 'react';
+export interface AdsenseProps {
     className?: string;
     style?: React.CSSProperties;
     client: string;
@@ -12,5 +12,3 @@ interface AdsenseProps {
     adTest?: string;
     children?: React.ReactNode;
 }
-export declare function Adsense({ className, style, client, slot, layout, layoutKey, format, responsive, pageLevelAds, adTest, children, ...rest }: AdsenseProps): React.JSX.Element;
-export default Adsense;

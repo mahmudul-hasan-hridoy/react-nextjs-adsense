@@ -1,54 +1,54 @@
 // src/components/AdSense.tsx
 "use client";
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
+import { AdsenseProps } from "../types";
 
-interface Props {
-  className?: string;
-  style?: React.CSSProperties;
-  client: string;
-  slot: string;
-  layout?: string;
-  layoutKey?: string;
-  format?: string;
-  responsive?: string;
-  pageLevelAds?: boolean;
-  adTest?: string;
-  children?: React.ReactNode;
-}
-
-export default function AdSense({
-  className = '',
-  style = { display: 'block' },
+export function Adsense({
+  className = "",
+  style = { display: "block" },
   client,
   slot,
-  layout = '',
-  layoutKey = '',
-  format = 'auto',
-  responsive = 'false',
+  layout = "",
+  layoutKey = "",
+  format = "auto",
+  responsive = "false",
   pageLevelAds = false,
   adTest,
   children,
   ...rest
-}: Props) {
+}: AdsenseProps) {
+  const insRef = useRef<HTMLModElement>(null);
+
   useEffect(() => {
-    const p: any = {};
+    const currentIns = insRef.current;
+    if (!currentIns) return;
+
+    const p: Record<string, any> = {};
     if (pageLevelAds) {
       p.google_ad_client = client;
       p.enable_page_level_ads = true;
     }
 
     try {
-      if (typeof window === 'object') {
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(p);
+      if (typeof window !== "undefined") {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
+          p,
+        );
       }
-    } catch {
-      // Pass
+    } catch (error) {
+      console.error("Adsense error:", error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return () => {
+      if (currentIns.firstChild) {
+        currentIns.innerHTML = "";
+      }
+    };
+  }, [client, slot, pageLevelAds]);
 
   return (
     <ins
+      ref={insRef}
       className={`adsbygoogle ${className}`}
       style={style}
       data-ad-client={client}
@@ -64,3 +64,5 @@ export default function AdSense({
     </ins>
   );
 }
+
+export default Adsense;
