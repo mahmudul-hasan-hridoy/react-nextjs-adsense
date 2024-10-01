@@ -1,5 +1,5 @@
 import React from 'react';
-export interface AdSenseProps {
+export interface AdsenseProps {
     className?: string;
     style?: React.CSSProperties;
     client: string;

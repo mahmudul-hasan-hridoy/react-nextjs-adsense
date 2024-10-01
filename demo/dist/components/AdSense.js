@@ -62,12 +62,12 @@ function Adsense(_a) {
             p.enable_page_level_ads = true;
         }
         try {
-            if (typeof window !== "undefined") {
+            if (typeof window === 'object') {
                 (window.adsbygoogle = window.adsbygoogle || []).push(p);
             }
         }
-        catch (error) {
-            console.error("Adsense error:", error);
+        catch (_a) {
+            // Pass
         }
         return function () {
             if (currentIns.firstChild) {

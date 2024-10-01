@@ -30,13 +30,11 @@ export function Adsense({
     }
 
     try {
-      if (typeof window !== "undefined") {
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
-          p,
-        );
+      if (typeof window === 'object') {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(p);
       }
-    } catch (error) {
-      console.error("Adsense error:", error);
+    } catch {
+      // Pass
     }
 
     return () => {

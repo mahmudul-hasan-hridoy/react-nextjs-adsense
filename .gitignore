@@ -102,8 +102,16 @@ out
 # vuepress v2.x temp and cache directory
 .temp
 .cache
+
+# custom file
 .replit
 replit.nix
+demo
+.config
+.upm
+src
+tsconfig.json
+.local
 
 # Docusaurus cache and generated files
 .docusaurus

@@ -67,7 +67,7 @@ const MyPage = () => {
     <div>
       <AdSense
         client="ca-pub-XXXXXXXXXXXXXXXX"
-        pageLevelAds={true}
+        layoutKey="-fb+5w+4e-db+86"
       />
       {/* Your page content */}
     </div>

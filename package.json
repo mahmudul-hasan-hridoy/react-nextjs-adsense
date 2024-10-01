@@ -1,6 +1,6 @@
 {
   "name": "react-nextjs-adsense",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "A React and Next.js component for Google AdSense",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,8 +41,5 @@
   "bugs": {
     "url": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense/issues"
   },
-  "homepage": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense#readme",
-  "dependencies": {
-    "next": "^14.2.12"
-  }
+  "homepage": "https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense#readme"
 }
