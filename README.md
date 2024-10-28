@@ -1,7 +1,7 @@
 # react-nextjs-adsense
 A React component for easy integration of Google AdSense in Next.js applications.
 
-Demo: [https://toolmaster.vercel.app/adsense-demo](https://toolmaster.vercel.app/adsense-demo)
+Demo: [https://toolmaster.vercel.app/adsense-demo](https://toolcluster.com/adsense-demo)
 
 ## Installation
 ```bash
