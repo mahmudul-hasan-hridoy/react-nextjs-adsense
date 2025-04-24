@@ -5,7 +5,7 @@ A modern React component library for seamlessly integrating Google AdSense into 
 [![npm version](https://img.shields.io/npm/v/react-nextjs-adsense.svg)](https://www.npmjs.com/package/react-nextjs-adsense)
 [![license](https://img.shields.io/npm/l/react-nextjs-adsense.svg)](https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense/blob/main/LICENSE)
 
-Demo: [https://toolcluster/adsense-demo](https://toolcluster.com/adsense-demo)
+Demo: [https://toolcluster.com/adsense-demo](https://toolcluster.com/adsense-demo)
 
 
 ## Why Choose react-nextjs-adsense?
