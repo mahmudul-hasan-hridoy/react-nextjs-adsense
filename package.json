@@ -1,12 +1,11 @@
 {
   "name": "react-nextjs-adsense",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A React and Next.js component for Google AdSense",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -14,7 +13,21 @@
     "nextjs",
     "adsense",
     "google",
-    "ads"
+    "ads",
+    "google-adsense",
+    "react-adsense",
+    "nextjs-adsense",
+    "adsense-component",
+    "google-ads",
+    "ethical-ads",
+    "islamic-adsense",
+    "halal-ads",
+    "haram-content-blocking",
+    "adblock-categories",
+    "non-personalized-ads",
+    "islamic-filter",
+    "ad-filtering",
+    "privacy-focused-ads"
   ],
   "author": "Mahmudul Hasan",
   "license": "MIT",
@@ -23,15 +36,8 @@
     "react-dom": ">=16.8.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.25.4",
-    "@babel/preset-react": "^7.24.7",
-    "@babel/preset-typescript": "^7.24.7",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "babel-jest": "^29.7.0",
-    "jest": "^27.5.1",
     "typescript": "^4.5.0"
   },
   "repository": {
