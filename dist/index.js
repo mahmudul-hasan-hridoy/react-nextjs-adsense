@@ -17,8 +17,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdSense = void 0;
+exports.Adsense = exports.AdSense = void 0;
 // src/index.ts
 var AdSense_1 = require("./components/AdSense");
 Object.defineProperty(exports, "AdSense", { enumerable: true, get: function () { return __importDefault(AdSense_1).default; } });
+Object.defineProperty(exports, "Adsense", { enumerable: true, get: function () { return AdSense_1.Adsense; } });
 __exportStar(require("./types"), exports);

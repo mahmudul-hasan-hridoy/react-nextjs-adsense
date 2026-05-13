@@ -5,111 +5,192 @@ A modern React component library for seamlessly integrating Google AdSense into 
 [![npm version](https://img.shields.io/npm/v/react-nextjs-adsense.svg)](https://www.npmjs.com/package/react-nextjs-adsense)
 [![license](https://img.shields.io/npm/l/react-nextjs-adsense.svg)](https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense/blob/main/LICENSE)
 
-Demo: [https://toolcluster.com/adsense-demo](https://toolcluster.com/adsense-demo)
+Demo: [Click here to see the AdSense demo](https://toolhut.vercel.app/adsense-demo)
 
+---
 
 ## Why Choose react-nextjs-adsense?
 
 - **Effortless Integration**: Simple, declarative API designed specifically for Next.js apps
 - **Ethical Advertising**: Built-in Islamic content filtering to ensure your ads align with ethical standards
+- **Consent-Ready**: Supports Google's `pauseAdRequests` and non-personalised ads patterns for GDPR compliance
 - **Developer-Friendly**: Comprehensive TypeScript support and intuitive props
-- **Performance Optimized**: Minimizes impact on your site's loading speed and user experience
+- **Performance Optimized**: Lazy-loads via IntersectionObserver to minimise impact on Core Web Vitals
+
+---
 
 ## Getting Started
 
 ### Installation
 
-Choose your preferred package manager:
-
 ```bash
-# Using npm
+# npm
 npm install react-nextjs-adsense
 
-# Using yarn
+# yarn
 yarn add react-nextjs-adsense
 
-# Using pnpm
+# pnpm
 pnpm add react-nextjs-adsense
 ```
 
-### Quick Start
+### 1. Add the AdSense script to your layout
 
-Adding AdSense to your Next.js application is as simple as:
+Add the script **once** in your root layout. Google's generated ad code uses the `?client=` query param and `crossOrigin="anonymous"` — use this exact form.
 
-```jsx
-import { AdSense } from 'react-nextjs-adsense';
-
-function HomePage() {
+```tsx
+// app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="content">
-      <h1>Welcome to My Site</h1>
-      <p>Valuable content for my visitors</p>
-      
-      {/* Add your AdSense ad unit */}
-      <AdSense
-        client="ca-pub-XXXXXXXXXXXXXXXX"  // Your AdSense Publisher ID
-        slot="1234567890"                 // Your AdSense Ad Unit ID
-      />
-    </div>
+    <html lang="en">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body>{children}</body>
+    </html>
   );
 }
 ```
 
-That's it! Your AdSense ads will display with ethical content filtering automatically enabled.
+> **Note:** Do not add a second copy of this script. The `<AdSense>` component handles calling `adsbygoogle.push({})` itself — you do not need to do it in the layout.
 
-## Component API
+Alternatively, use Next.js `<Script>` with `strategy="afterInteractive"` if you prefer to defer loading:
 
-### AdSense Props
+```tsx
+import Script from 'next/script';
 
-| Prop | Type | Required | Default | Description |
-|------|------|:--------:|---------|-------------|
-| `client` | `string` | ✓ | - | Your Google AdSense publisher ID (format: 'ca-pub-XXXXXXXXXXXXXXXX') |
-| `slot` | `string` | ✓ | - | Your AdSense ad unit ID |
-| `format` | `string` | - | `'auto'` | Ad format specification (e.g., 'auto', 'rectangle', 'vertical') |
-| `responsive` | `string` | - | `'false'` | Set to `'true'` for responsive ads that adapt to container width |
-| `layout` | `string` | - | `''` | Ad layout format for advanced configurations |
-| `layoutKey` | `string` | - | `''` | Layout key for customized ad formats |
-| `className` | `string` | - | `''` | Additional CSS class to style the ad container |
-| `style` | `React.CSSProperties` | - | `{ display: 'block' }` | Inline styles for customizing ad appearance |
-| `pageLevelAds` | `boolean` | - | `false` | Enable Google's page-level ads |
-| `adTest` | `string` | - | `undefined` | Ad test mode parameter (for development use) |
-| `useIslamicGuidelines` | `boolean` | - | `true` | Enable ethical content filtering based on Islamic guidelines |
-| `blockCategories` | `string[]` | - | `[]` | Additional ad categories you want to block |
+<Script
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+  crossOrigin="anonymous"
+  strategy="afterInteractive"
+/>
+```
 
-## Ethical Content Filtering
+### 2. Place an ad unit
 
-Our library comes with a built-in ethical content filtering system based on Islamic guidelines, which is **enabled by default**. This means you don't need to configure anything to start benefiting from cleaner, more appropriate advertising on your site.
+```tsx
+"use client";
+import { AdSense } from 'react-nextjs-adsense';
 
-### What Gets Filtered?
+export default function BlogPost() {
+  return (
+    <article>
+      <h1>Blog Post Title</h1>
 
-The filtering system automatically blocks over 30 potentially problematic ad categories, including:
+      <AdSense
+        client="ca-pub-XXXXXXXXXXXXXXXX"
+        slot="1234567890"
+        format="auto"
+        responsive="true"
+      />
 
-- Dating and relationship services
-- Gambling and betting 
-- Alcohol and tobacco products
-- Adult and suggestive content
-- Interest-based financial products
-- Contentious political material
-- And many more categories that may not align with ethical values
+      <p>Your content here...</p>
+    </article>
+  );
+}
+```
 
-### Customizing Content Filtering
+That's it. Ethical content filtering is automatically enabled.
 
-While the default settings work well for most users, you can easily customize the filtering:
+---
 
-```jsx
+## Consent & Non-Personalised Ads
+
+If you need to serve non-personalised ads to some users (e.g. users who have declined personalisation), pass `consentState` to the component. When personalisation is denied the component sets `requestNonPersonalizedAds=1`. When ad storage is denied entirely it uses `pauseAdRequests=1` to hold the request until consent is updated.
+
+```tsx
+import { AdSense, ConsentState } from 'react-nextjs-adsense';
+
+// These values would come from your consent management solution
+const consent: ConsentState = {
+  ad_storage: "granted",          // "granted" | "denied"
+  ad_personalization: "granted",  // "granted" | "denied"
+};
+
 <AdSense
   client="ca-pub-XXXXXXXXXXXXXXXX"
   slot="1234567890"
-  // Block additional categories beyond the defaults
+  consentState={consent}
+/>
+```
+
+**Behaviour by consent combination:**
+
+| `ad_storage` | `ad_personalization` | Result |
+|---|---|---|
+| `"granted"` | `"granted"` | Normal personalised ads |
+| `"granted"` | `"denied"` | Non-personalised ads |
+| `"denied"` | any | Ad request paused — no ad fires |
+
+If you have a TCF-integrated CMP on the page that already handles NPA signalling, set `tcfCompliant: true` so the component does not double-signal:
+
+```tsx
+const consent: ConsentState = {
+  ad_storage: "granted",
+  ad_personalization: "granted",
+  tcfCompliant: true,
+};
+```
+
+---
+
+## Component API
+
+### Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|:--------:|---------|-------------|
+| `client` | `string` | ✓ | — | Your AdSense publisher ID (`ca-pub-XXXXXXXXXXXXXXXX`) |
+| `slot` | `string` | ✓ | — | Your ad unit ID |
+| `format` | `string` | | `'auto'` | Ad format (`'auto'`, `'rectangle'`, `'vertical'`, `'fluid'`, etc.) |
+| `responsive` | `string` | | `'false'` | Set `'true'` to make the ad adapt to container width |
+| `layout` | `string` | | `''` | Ad layout (e.g. `'in-article'`) |
+| `layoutKey` | `string` | | `''` | Layout key for customised ad formats |
+| `className` | `string` | | `''` | CSS class on the `<ins>` element |
+| `style` | `React.CSSProperties` | | `{ display: 'block' }` | Inline styles |
+| `pageLevelAds` | `boolean` | | `false` | Enable Auto / page-level ads |
+| `adTest` | `string` | | `undefined` | Set to `"on"` during development only — never in production |
+| `useIslamicGuidelines` | `boolean` | | `true` | Enable Islamic-guidelines category blocklist |
+| `blockCategories` | `string[]` | | `[]` | Additional ad categories to block |
+| `consentState` | `ConsentState` | | `undefined` | Consent signals for non-personalised / paused ad handling |
+
+### ConsentState type
+
+```ts
+interface ConsentState {
+  ad_storage: "granted" | "denied";
+  ad_personalization: "granted" | "denied";
+  /** Set true if a TCF CMP is active and already handles NPA signalling */
+  tcfCompliant?: boolean;
+}
+```
+
+---
+
+## Ethical Content Filtering
+
+Islamic-guidelines filtering is **enabled by default**. It automatically blocks 30+ ad categories using Google's `setCategoryExclusion` API.
+
+Categories blocked by default include: dating, gambling, alcohol, tobacco, adult content, sex-related, interest-based loans (riba), speculative financial products (gharar), astrology, esoteric content, social casino, and more.
+
+### Add extra categories
+
+```tsx
+<AdSense
+  client="ca-pub-XXXXXXXXXXXXXXXX"
+  slot="1234567890"
   blockCategories={["fashion", "travel", "entertainment"]}
 />
 ```
 
-### Disabling Ethical Filtering
+### Disable Islamic filtering
 
-In specific cases where you need to disable the ethical filtering system:
-
-```jsx
+```tsx
 <AdSense
   client="ca-pub-XXXXXXXXXXXXXXXX"
   slot="1234567890"
@@ -117,34 +198,33 @@ In specific cases where you need to disable the ethical filtering system:
 />
 ```
 
+---
+
 ## Integration Examples
 
-### With Next.js App Router (Next.js 13+)
+### App Router (Next.js 13+)
 
-```jsx
-// app/blog/[slug]/page.jsx
+```tsx
+// app/blog/[slug]/page.tsx
 "use client";
-
 import { AdSense } from 'react-nextjs-adsense';
 
 export default function BlogPost() {
   return (
     <article className="blog-content">
       <h1>Blog Post Title</h1>
-      
-      {/* Top of article ad */}
+
       <AdSense
         client="ca-pub-XXXXXXXXXXXXXXXX"
         slot="1234567890"
         responsive="true"
         style={{ marginBottom: '2rem' }}
       />
-      
+
       <div className="article-content">
-        <p>Your valuable blog content here...</p>
+        <p>Your content here...</p>
       </div>
-      
-      {/* Bottom of article ad */}
+
       <AdSense
         client="ca-pub-XXXXXXXXXXXXXXXX"
         slot="9876543210"
@@ -156,111 +236,88 @@ export default function BlogPost() {
 }
 ```
 
-### With Next.js Pages Router
+### Pages Router
 
-```jsx
-// pages/index.js
+```tsx
+// pages/index.tsx
 import { AdSense } from 'react-nextjs-adsense';
 
 export default function Home() {
   return (
-    <div className="homepage">
-      <header>
-        <h1>Welcome to My Website</h1>
-      </header>
-      
-      <main>
-        <section className="featured-content">
-          {/* Content here */}
-        </section>
-        
-        <AdSense
-          client="ca-pub-XXXXXXXXXXXXXXXX"
-          slot="1234567890"
-          format="auto"
-          responsive="true"
-        />
-        
-        <section className="more-content">
-          {/* More content here */}
-        </section>
-      </main>
-    </div>
+    <main>
+      <AdSense
+        client="ca-pub-XXXXXXXXXXXXXXXX"
+        slot="1234567890"
+        format="auto"
+        responsive="true"
+      />
+    </main>
   );
 }
 ```
+
+---
 
 ## TypeScript Support
 
-Our library includes comprehensive TypeScript definitions to enhance your development experience:
-
 ```typescript
-import { 
-  AdSense, 
-  HaramCategory, 
-  HARAM_AD_CATEGORIES 
+import {
+  AdSense,
+  ConsentState,
+  HaramCategory,
+  HARAM_AD_CATEGORIES,
 } from 'react-nextjs-adsense';
 
-// Type-safe access to the default blocked categories
 const defaultCategories: readonly HaramCategory[] = HARAM_AD_CATEGORIES;
 
-// Your component with typed props
-interface ContentSectionProps {
-  showAds: boolean;
-}
-
-function ContentSection({ showAds }: ContentSectionProps) {
-  return (
-    <section>
-      {showAds && (
-        <AdSense
-          client="ca-pub-XXXXXXXXXXXXXXXX"
-          slot="1234567890"
-          blockCategories={["fashion", "beauty"]}
-        />
-      )}
-    </section>
-  );
-}
+const consent: ConsentState = {
+  ad_storage: "granted",
+  ad_personalization: "denied",
+};
 ```
+
+---
 
 ## Best Practices
 
-### Performance Optimization
+**Script setup**
+- Load `adsbygoogle.js` once per page in your root layout
+- Use the `?client=ca-pub-XXXXXXXXXXXXXXXX` query param — this is the format Google generates when you copy code from your AdSense account
+- Do not call `adsbygoogle.push({})` in your layout; the `<AdSense>` component handles this
 
-- **Strategic Placement**: Place ads where they won't disrupt your content flow
-- **Limit Ad Units**: Don't overwhelm your users with too many ads on one page
-- **Responsive Design**: Use `responsive="true"` to ensure ads look good on all devices
+**Ad placement**
+- Use `responsive="true"` on all units to prevent layout shift
+- Keep to 3 or fewer ad units per page
+- Place ads where they complement content rather than interrupt it
 
-### Maximizing Revenue While Maintaining Ethics
+**Development vs production**
+- Set `adTest="on"` during development to simulate ads without real impressions
+- Remove `adTest` (or leave it `undefined`) before deploying — leaving it on means no real revenue is earned
 
-- **Quality Content First**: Focus on creating valuable content that attracts engaged users
-- **Ad Placement Testing**: Experiment with different placements to find what works best
-- **Ethical Balance**: Maintain a balance between monetization and user experience
+**Troubleshooting**
 
-### Troubleshooting
+If ads aren't showing:
+1. Confirm your AdSense account is approved and the ad unit is active
+2. Disable your ad blocker — it affects test ads too
+3. Double-check your `client` and `slot` values
+4. Confirm the `adsbygoogle.js` script is present in the page `<head>`
+5. Check the browser console for `adsbygoogle` errors
 
-If your ads aren't displaying:
+---
 
-1. Verify your AdSense account is approved and active
-2. Double-check your `client` and `slot` values
-3. Ensure you've added the AdSense script to your Next.js application
-4. Check your browser console for any error messages
-
-## Support and Contribution
-
-We welcome contributions and feedback! If you encounter issues or have suggestions for improvements, please open an issue on our GitHub repository.
-
-## 🔗 Further Resources
+## Further Resources
 
 - [Official Google AdSense Documentation](https://support.google.com/adsense/answer/1307042)
+- [Ad Personalization Settings & Code Examples](https://support.google.com/adsense/answer/9042142)
 - [Google's Ad Category Controls](https://support.google.com/adsense/answer/164131)
 - [Next.js Documentation](https://nextjs.org/docs)
 
-## 📄 License
+---
+
+## License
 
 MIT
 
-## 👋 Contributing
+## Contributing
 
-We welcome contributions to improve this library! Please feel free to submit issues or pull requests.
+Issues and pull requests are welcome on [GitHub](https://github.com/mahmudul-hasan-hridoy/react-nextjs-adsense).

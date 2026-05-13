@@ -1,3 +1,14 @@
+/**
+ * app/layout.tsx — 2026 compliant AdSense setup
+ *
+ * Key changes vs original:
+ * 1. Single adsbygoogle.js script with required ?client= param
+ * 2. Removed duplicate script tag (was loading adsbygoogle.js twice)
+ * 3. crossOrigin="anonymous" added (required by Google docs)
+ * 4. No inline adsbygoogle.push() — handled by <AdSense> component
+ * 5. Consent provider slot documented for TCF v2.3 EEA/UK compliance
+ */
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -28,14 +39,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
+        {/* 2026: single script with ?client= param + crossOrigin required */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6380030036040607"
           crossOrigin="anonymous"
-        ></script>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
         ></script>
         <meta name="google-adsense-account" content="ca-pub-6380030036040607" />
         {children}
